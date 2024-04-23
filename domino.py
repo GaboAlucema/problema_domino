@@ -18,6 +18,11 @@ def eliminar(tablero, fila, col, orientacion):
         tablero[fila][col] = 0
         tablero[fila + 1][col] = 0
 
+def mostrar(tabla):
+    for fila in tabla:
+        print(' '.join(map(str,fila)))
+    print()
+
 def rellenar(tablero, fila, col, soluciones):
     if fila == len(tablero):
         soluciones.append([fila[:] for fila in tablero])
@@ -38,7 +43,7 @@ def rellenar(tablero, fila, col, soluciones):
     else:
         rellenar(tablero, sigfila, sigcol, soluciones)
 
-def solucion(fila,col):
+def encontrar_sol(fila,col):
     if (fila*col)%2!=0:
         print("No tiene solucion (producto de filas y columnas es impar)")
         return
@@ -46,9 +51,14 @@ def solucion(fila,col):
     soluciones = []
     rellenar(tablero, 0, 0, soluciones)
 
+    print(f"Se encontraron {len(soluciones)} soluciones posibles:")
+    for i, solucion in enumerate(soluciones):
+        print(f"Solucion {i + 1}:")
+        mostrar (solucion)
+
 
 if __name__=="__main__":
     N = int(input("Ingrese el numero de filas: "))
-    M = int(input("Ingrese el numero de columnas"))
+    M = int(input("Ingrese el numero de columnas: "))
 
-    solucion(N, M)
+    encontrar_sol(N, M)
