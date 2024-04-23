@@ -1,6 +1,12 @@
 
-def valido(tablero, fila, col):
-    return tablero[fila][col] == 0
+def valido(tablero, fila, col, direccion):
+    if direccion == "h":
+        if tablero[fila][col] == 0 and tablero[fila][col + 1] == 0:
+            return True
+    elif direccion == "v":
+        if tablero[fila][col] == 0 and tablero[fila + 1][col] == 0:
+            return True
+    return False
 
 def colocar(tablero, fila, col, orientacion):
     if orientacion == "h":
@@ -31,11 +37,12 @@ def rellenar(tablero, fila, col, soluciones):
     sigfila = fila + (col + 1) // len(tablero[0])
     sigcol = (col + 1) % len(tablero[0])
 
-    if valido(tablero, fila, col):
+    if valido(tablero, fila, col, "h"):
         colocar(tablero, fila, col, "h")
         rellenar(tablero, sigfila, sigcol, soluciones)
         eliminar(tablero, fila, col, "h")
 
+    elif valido(tablero, fila, col, "v"):
         colocar(tablero, fila, col, "v")
         rellenar(tablero, sigfila, sigcol, soluciones)
         eliminar(tablero, fila, col, "v")
