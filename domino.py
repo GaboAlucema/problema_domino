@@ -1,10 +1,10 @@
 
-def valido(tablero, fila, col, direccion):
+def valido(tablero, fila, col, direccion,siguiente):
     if direccion == "h":
-        if tablero[fila][col] == 0 and tablero[fila][col + 1] == 0:
+        if tablero[fila][col] == 0 and tablero[fila][siguiente] == 0:
             return True
     elif direccion == "v":
-        if tablero[fila][col] == 0 and tablero[fila + 1][col] == 0:
+        if tablero[fila][col] == 0 and tablero[siguiente][col] == 0:
             return True
     return False
 
