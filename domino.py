@@ -2,6 +2,12 @@
 def valido(tablero, fila, col, direccion, siguiente):
     if direccion == "h":
         if tablero[fila][col] == 0 and tablero[fila][siguiente] == 0:
+            '''
+            if (col == len(tablero[0]) - 1):
+                for i in len(tablero[0]):
+                    if tablero[fila][i] == "h":
+                        return False
+            '''
             return True
     elif direccion == "v":
         if tablero[fila][col] == 0 and tablero[siguiente][col] == 0:
