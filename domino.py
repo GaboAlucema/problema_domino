@@ -1,16 +1,10 @@
 
 def valido(tablero, fila, col, direccion, siguiente):
     if direccion == "h":
-        if tablero[fila][col] == 0 and tablero[fila][siguiente] == 0:
-            '''
-            if (col == len(tablero[0]) - 1):
-                for i in len(tablero[0]):
-                    if tablero[fila][i] == "h":
-                        return False
-            '''
+        if  col + 1 < len(tablero[0]) and tablero[fila][col] == 0 and tablero[fila][siguiente] == 0:
             return True
     elif direccion == "v":
-        if tablero[fila][col] == 0 and tablero[siguiente][col] == 0:
+        if fila + 1 < len(tablero) and tablero[fila][col] == 0 and tablero[siguiente][col] == 0:
             return True
     return False
 
@@ -35,7 +29,7 @@ def mostrar(tabla):
         print(' '.join(map(str,fila)))
     print()
 
-def rellenar(tablero, fila, col, soluciones):
+def rellenar(tablero, fila, col, soluciones, orientacion_anterior=None):
     if fila == len(tablero):
         soluciones.append([fila[:] for fila in tablero])
         return
@@ -43,31 +37,46 @@ def rellenar(tablero, fila, col, soluciones):
     sigfila = fila + (col + 1) // len(tablero[0])
     sigcol = (col + 1) % len(tablero[0])
 
-    if valido(tablero, fila, col, "h", sigcol):
-        colocar(tablero, fila, col, "h")
-        rellenar(tablero, sigfila, sigcol, soluciones)
-        eliminar(tablero, fila, col, "h")
+    if orientacion_anterior == "h":
+        if valido(tablero, fila, col, "v", sigfila):
+            colocar(tablero, fila, col, "v")
+            rellenar(tablero, sigfila, sigcol, soluciones)
+            eliminar(tablero, fila, col, "v")
 
-    elif valido(tablero, fila, col, "v", sigfila):
-        colocar(tablero, fila, col, "v")
-        rellenar(tablero, sigfila, sigcol, soluciones)
-        eliminar(tablero, fila, col, "v")
-
+        if valido(tablero, fila, col, "h", sigcol):
+            colocar(tablero, fila, col, "h")
+            rellenar(tablero, sigfila, sigcol, soluciones)
+            eliminar(tablero, fila, col, "h")
     else:
-        rellenar(tablero, sigfila, sigcol, soluciones)
+        if valido(tablero, fila, col, "h", sigcol):
+            colocar(tablero, fila, col, "h")
+            rellenar(tablero, sigfila, sigcol, soluciones)
+            eliminar(tablero, fila, col, "h")
+        if valido(tablero, fila, col, "v", sigfila):
+            colocar(tablero, fila, col, "v")
+            rellenar(tablero, sigfila, sigcol, soluciones)
+            eliminar(tablero, fila, col, "v")
+            
+
+    rellenar(tablero, sigfila, sigcol, soluciones)
 
 def encontrar_sol(fila,col):
-    if (fila*col)%2!=0:
+    if (fila*col) % 2 != 0:
         print("No tiene solucion (producto de filas y columnas es impar)")
         return
     tablero = [[0] * col for _ in range(fila)]
     soluciones = []
     rellenar(tablero, 0, 0, soluciones)
 
-    print(f"Se encontraron {len(soluciones)} soluciones posibles:")
-    for i, solucion in enumerate(soluciones):
-        print(f"Solucion {i + 1}:")
-        mostrar (solucion)
+    soluciones_validas = [solucion for solucion in soluciones if all (casilla != 0 for fila in solucion for casilla in fila)]
+    
+    if len(soluciones_validas) == 0:
+        print("No se encontraron soluciones posibles.")
+    else:
+        print(f"Se encontraron {len(soluciones_validas)} soluciones posibles:")
+        for i, solucion in enumerate(soluciones_validas):
+            print(f"Solucion {i + 1}:")
+            mostrar (solucion)
 
 
 if __name__=="__main__":
