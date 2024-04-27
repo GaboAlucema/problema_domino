@@ -1,11 +1,9 @@
 
 def valido(tablero, fila, col, direccion, siguiente):
     if direccion == "h":
-        if  col + 1 < len(tablero[0]) and tablero[fila][col] == 0 and tablero[fila][siguiente] == 0:
-            return True
+        return  col + 1 < len(tablero[0]) and tablero[fila][col] == 0 and tablero[fila][siguiente] == 0:
     elif direccion == "v":
-        if fila + 1 < len(tablero) and tablero[fila][col] == 0 and tablero[siguiente][col] == 0:
-            return True
+        return fila + 1 < len(tablero) and tablero[fila][col] == 0 and tablero[siguiente][col] == 0:
     return False
 
 def colocar(tablero, fila, col, orientacion):
